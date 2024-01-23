@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: result-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: result
+  template:
+    metadata:
+      labels:
+        app: result
+    spec:
+      containers:
+      - name: result
+        image: omercan99/result
+        ports:
+        - containerPort: 80
+        envFrom:
+        - secretRef:
+            name: mysql-secret
+        - configMapRef:
+            name: servers-cm        
+       #env:
+       #- name: MYSQL_DATABASE_HOST
+       #  #value: mysql-service
+       #  valueFrom:
+       #    configMapKeyRef:
+       #      name: servers-cm
+       #      key: db-host
+       #- name: MYSQL_DATABASE
+       #  #value: phonebook
+       #  valueFrom:
+       #    configMapKeyRef:
+       #      name: servers-cm
+       #      key: db
+       #- name: MYSQL_USER
+       #  #value: clarus
+       #  valueFrom:
+       #    configMapKeyRef:
+       #      name: servers-cm
+       #      key: user
+       #- name: MYSQL_PASSWORD
+       #  #value: Clarusway_1
+       #  valueFrom:
+       #    secretKeyRef:
+       #      name: mysql-secret
+       #      key: pass
